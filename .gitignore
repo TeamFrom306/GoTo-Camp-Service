@@ -1,0 +1,5 @@
+.DS_Store
+WebMorda/node_modules/
+dist/
+npm-debug.log
+yarn-error.log
