@@ -96,7 +96,7 @@ class Handler:
 			description = server.get_info_by_name(msg.text)
 			if (description is not None) & (description != ""):
 				self.bot.send_message(msg.chat.id, description[2])
-			self.bot.register_next_step_handler(msg, self.get_description_event)
+			self.bot.register_next_step_handler(msg, self.get_info_description)
 		return True
 
 	def set_room(self, msg):
@@ -132,27 +132,25 @@ class Handler:
 		markup = telebot.types.ReplyKeyboardMarkup()
 		markup.add('Back')
 		if id_team:
-			self.bot.send_message(msg.chat.id, config.start_quest_msg, reply_markup=markup)
-			self.bot.register_next_step_handler(msg, self.ask_question)
+			self.ask_question(msg)
 		else:
 			self.bot.send_message(msg.chat.id, config.wrong_codeword_msg, reply_markup=markup)
 			self.bot.register_next_step_handler(msg, self.check_login)
 		return True
 
-# TODO token in each message?
 	def ask_question(self, msg):
 		if msg.text == 'Back':
 			self.bot.send_message(msg.chat.id, config.main_menu_msg, reply_markup=self.menu.get_root().make_keyboard())
 			self.bot.register_next_step_handler(msg, self.menu.get_root().handler)
 			return True
 		question = server.get_next_question(msg.chat.id)
-		if question is None:
+		if not question:
 			self.bot.send_message(msg.chat.id, config.congratulation_msg, reply_markup=self.menu.get_root().make_keyboard())
 			self.bot.register_next_step_handler(msg, self.menu.get_root().handler)
 		else:
 			markup = telebot.types.ReplyKeyboardMarkup()
-			markup.add('Back')
 			markup.add('Question')
+			markup.add('Back')
 			self.bot.send_message(msg.chat.id, question[0], reply_markup=markup)
 			self.bot.register_next_step_handler(msg, self.check_answer)
 		return True
@@ -166,7 +164,7 @@ class Handler:
 			return self.ask_question(msg)
 		answer = server.get_answer(msg.chat.id)
 		if answer[0] == msg.text:
-			server.inc(msg.id)
+			server.inc(msg.chat.id)
 			return self.ask_question(msg)
 		else:
 			markup = telebot.types.ReplyKeyboardMarkup()

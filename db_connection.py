@@ -256,28 +256,38 @@ class Database:
 			print(e)
 			return False
 
-	def get_next_question(self, id_tg):
+	def get_next_question(self, id_group):
 		try:
-			s = "SELECT questions.description FROM users " \
-				"JOIN users_groups ON users.id_user = users_groups.id_user " \
-				"JOIN teams ON teams.id_group == users_groups.id_group " \
-				"JOIN groups_questions ON teams.id_group = groups_questions.id_group " \
+			s = "SELECT questions.description " \
+				"FROM teams JOIN groups_questions ON teams.id_group = groups_questions.id_group " \
 				"JOIN questions ON groups_questions.id_question = questions.id_question " \
-				"WHERE users.id_user == {0} AND teams.q_num == questions.q_num".format(id_tg)
+				"WHERE teams.id_group == {0} AND teams.q_num == questions.q_num".format(id_group)
 			return self.db.execute(s).fetchone()
 		except Exception as e:
 			print(e)
 			return False
 
-	def get_answer(self, id_tg):
+	def get_answer(self, id_group):
 		try:
-			s = "SELECT questions.answer FROM users " \
-				"JOIN users_groups ON users.id_user = users_groups.id_user " \
-				"JOIN teams ON teams.id_group == users_groups.id_group " \
-				"JOIN groups_questions ON teams.id_group = groups_questions.id_group " \
+			s = "SELECT questions.answer " \
+				"FROM teams JOIN groups_questions ON teams.id_group = groups_questions.id_group " \
 				"JOIN questions ON groups_questions.id_question = questions.id_question " \
-				"WHERE users.id_user == {0} AND teams.q_num == questions.q_num".format(id_tg)
+				"WHERE teams.id_group == {0} AND teams.q_num == questions.q_num".format(id_group)
 			return self.db.execute(s).fetchone()
 		except Exception as e:
 			print(e)
 			return False
+
+	def inc(self, id_group):
+		try:
+			s = "UPDATE teams SET q_num = q_num + 1 WHERE id_group == {0}".format(id_group)
+			self.db.execute(s)
+			self.db.commit()
+			return True
+		except Exception as e:
+			print(e)
+			return False
+
+	def add_reference_info(self, name, description):
+		s = "INSERT INTO reference_informations (name, description) VALUES ('{0}', '{1}')".format(name, description)
+		return self.add_data_by_sql(s)

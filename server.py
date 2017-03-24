@@ -3,6 +3,7 @@ from db_connection import Database
 import bot
 
 db = Database()
+last_team_id = {}
 
 
 # region Urgent Messages
@@ -68,6 +69,10 @@ def get_reference_info(id_tg):
 	ref_info = db.get_data(None, 'reference_information')
 	room = get_users(id_tg)
 	return ref_info, room
+
+
+def add_reference_information(name, description):
+	return db.add_reference_info(name, description)
 
 
 # </editor-fold>
@@ -156,6 +161,7 @@ def get_start_end_date(date):
 	end = datetime.combine(date.date() + timedelta(days=1), datetime.min.time()).timestamp()
 	return start, end
 
+
 # </editor-fold>
 def wipe_data():
 	db.wipe_data()
@@ -178,16 +184,19 @@ def get_info_by_name(text):
 
 
 def check_login(id_tg, codeword):
-	return db.check_login(id_tg, codeword)
+	res = db.check_login(id_tg, codeword)
+	if res:
+		last_team_id[id_tg] = res[0]
+	return res
 
 
 def get_next_question(id_tg):
-	return db.get_next_question(id_tg)
+	return db.get_next_question(last_team_id[id_tg])
 
 
 def get_answer(id_tg):
-	return db.get_answer(id_tg)
+	return db.get_answer(last_team_id[id_tg])
 
 
-def inc():
-	db.inc
+def inc(id_tg):
+	db.inc(last_team_id[id_tg])

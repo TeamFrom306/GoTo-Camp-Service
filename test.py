@@ -74,10 +74,13 @@ def questions_test():
 	print(server.get_events(id_group))
 
 	assert (server.remove_question(1))
-	id_questions = [server.add_question(0, 'asd', 'asqwe'), server.add_question(1, 'asd', 'asqwe')]
+	id_questions = [server.add_question(0, 'question1', '123'), server.add_question(1, 'question2', '234')]
 	assert id_questions != []
 	server.add_questions_to_team(id_group, id_questions)
 	print(server.get_questions(id_group))
+
+	server.add_reference_information('Number1', '8999999999')
+	server.add_reference_information('Number2', '9888888888')
 
 	id_achievement = server.add_achievement('Top 5', 'the best man')
 	assert id_achievement
