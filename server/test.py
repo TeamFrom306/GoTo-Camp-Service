@@ -51,26 +51,26 @@ def fill_data():
 
 if __name__ == '__main__':
 	# Wipe all data from DB
-	# Comment in realise
-	server.wipe_data()
+	# Comment in release
+	# server.wipe_data()
 
 	bot.make_bot()
 
-	# Comment in realise
-	fill_data()
+	# Comment in release
+	# fill_data()
 
 	# Scheduler for recent notifications
-	p = Process(target=server.start_scheduler, args=())
-	p.start()
+	# p = Process(target=server.start_scheduler, args=())
+	# p.start()
 
 	# Scheduler for sending a schedule every day
 	# param#1 = hour, param#2 = minute
-	p1 = Process(target=server.yet_another_scheduler, args=(14, 15,))
-	p1.start()
+	# p1 = Process(target=server.yet_another_scheduler, args=(14, 15,))
+	# p1.start()
 
 	# Web listener for web-morda
 	p2 = Process(target=listener.run, args=(True,))
 	p2.start()
 
 	# Start bot
-	bot.start_polling()
+	# bot.start_polling()

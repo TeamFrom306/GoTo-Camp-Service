@@ -31,7 +31,7 @@ export default function (baseUrl) {
 	}
 
 	function get(url, successCallback, errorCallback) { ajax("GET", url, '', successCallback, errorCallback); }
-	function post(url, data, successCallback, errorCallback) { ajax("GET", url, data, successCallback, errorCallback); }
+	function post(url, data, successCallback, errorCallback) { ajax("POST", url, data, successCallback, errorCallback); }
 	function del(url, successCallback, errorCallback) { ajax("DELETE", url, '', successCallback, errorCallback); }
 	function put(url, data, successCallback, errorCallback) { ajax("PUT", url, data, successCallback, errorCallback); }
 
