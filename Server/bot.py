@@ -1,9 +1,10 @@
-import telebot
 from time import sleep
-import config
-import server
-from handler import Handler
-from menu import Menu
+from Server import config
+import telebot
+from Server.handler import Handler
+from Server.menu import Menu
+
+from Server import server
 
 bot = telebot.TeleBot(config.token)
 menu = Menu("Root", "ROOT", bot)

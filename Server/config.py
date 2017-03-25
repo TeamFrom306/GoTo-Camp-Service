@@ -1,7 +1,7 @@
 token = '186494355:AAGJKF0-L_anP5XzdXWYV6NFyZJUDwLgnzM'
 spreadsheet_id = '1aW8yqhI8mfqWjqd5EupSbFCq5XELn_WzXniVQLM79nQ'
 
-database = 'tg-bot'
+database = 'Server/tg-bot'
 
 anton_tg_id = 111270670
 

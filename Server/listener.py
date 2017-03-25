@@ -1,9 +1,9 @@
 import hashlib
 from datetime import datetime
 
-import server
+from flask import Flask, request, jsonify
 
-from flask import Flask, render_template, request, jsonify
+from Server import server
 
 app = Flask(__name__)
 

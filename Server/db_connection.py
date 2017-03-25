@@ -1,6 +1,6 @@
 import sqlite3
 
-import config
+from Server import config
 
 
 # noinspection PyBroadException

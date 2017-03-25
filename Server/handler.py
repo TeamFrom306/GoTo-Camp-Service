@@ -1,10 +1,10 @@
 import datetime
 
-import telebot
-
-from db_connection import Database
-import server
 import config
+import telebot
+from db_connection import Database
+
+from Server import server
 
 
 class Handler:
