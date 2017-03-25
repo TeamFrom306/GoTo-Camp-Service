@@ -1,16 +1,20 @@
 <template>
-<div style="width: 100vw;height: 100vh;display: table;">
-	<div style="display: table-cell;text-align: center;vertical-align: middle;">
-		<div style="display: inline-block;text-align: left;">
+<div class="parent">
+	<div class="centered">
+		<div class="l-form">
 			<ui-textbox
-				style="margin:10px;display:inline-block"
+				style="margin:10px;display:block;width:100%;margin-bottom:30px"
 				floating-label
 				label="Password"
 				v-model="password"
+				:error="error"
+				:invalid="inputInvalid"
+				:autofocus="true"
+				@input="refresh"
 				@keydown.enter="login"
 			></ui-textbox>
 			<ui-button
-				style="margin:10px;display:inline-block"
+				style="margin:10px;display:block;width:100%"
 				@click="login"
 			>Log in</ui-button>
 		</div>
@@ -25,24 +29,52 @@
 	export default {
 		data() {
 			return {
-				password: ''
+				password: '',
+				error: '',
+				inputInvalid: false
 			}
 		},
 		methods: {
 			login() {
-				console.log(this);
+				console.log(this.$root);
+				
 				if (this.password.length > 0)				
-					api.login(require('js-sha256')(this.password), this.setToken);
+					api.login(require('js-sha256')(this.password), this.setToken, this.errorCallback);
 				else
-					this.error(406, "You must provide a password!");
+					this.errorCallback(406, "You must provide a password!");
 			},
 			setToken(token) {
 				this.$root.$options.user.token = token;
 			},
-			error(code, error) {
-				//TODO
+			errorCallback(code, error) {
+				this.inputInvalid = true;
+				this.error = "Error " + code + ": " + error;
 				console.log("Error " + code + ": " + error);
+			},
+			refresh() {
+				this.inputInvalid = false;
 			}
 		}
 	}
 </script>
+
+<style>
+	.parent {
+		width: 100vw;
+		height: 100vh;
+		display: table;
+	}
+	.centered {
+		display: table-cell;
+		text-align: center;
+		vertical-align: middle;
+	}
+	.l-form {
+		display: inline-block;
+		text-align: left;
+		width: 300px;
+	}
+	.ui-textbox__feedback {
+		position: absolute !important;
+	}
+</style>

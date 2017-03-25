@@ -6,6 +6,11 @@
 
 <script>
 	export default {
-		name: 'main'
+		name: 'main',
+		data() {
+			return {
+				user: this.$root.$options.user
+			}
+		}
 	};
 </script>

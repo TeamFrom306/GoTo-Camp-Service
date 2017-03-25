@@ -7,7 +7,7 @@ import user from './user';
 
 //css
 import 'normalize.css';
-import '../static/index.css';
+import '../static/css/index.css';
 import 'keen-ui/dist/keen-ui.min.css';
 
 Vue.config.productionTip = false;
