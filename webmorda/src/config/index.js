@@ -1,6 +1,6 @@
 export default {
     web: {
-        url: 'http://127.0.0.1:80/',
+        url: 'http://localhost:8080/',
     },
     tokenstring: 'token'
 }
