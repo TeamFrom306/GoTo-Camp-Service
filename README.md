@@ -5,7 +5,7 @@
 
 ## Build Setup Bot & Server part
 ``` bash
-# reqierement python 3.5+
+# reqierement python 3.4+
 
 # install dependencies
 pip install PyTelegramBotAPI
@@ -20,25 +20,10 @@ python test.py
 
 ---
 
-## Build Setup Bot & Server part
-``` bash
-# reqierement python 3.5+
-
-# install dependencies
-pip install PyTelegramBotAPI
-
-pip install Flask
-
-# configurate messages from config.py
-
-# run Server with bot
-python test.py
-```
-
 ## Build Setup front-end vue.js part
 
 ``` bash
-cd ./WebMorda/gcs-WebMorda
+cd ./webmorda/
 
 # install dependencies
 npm install
