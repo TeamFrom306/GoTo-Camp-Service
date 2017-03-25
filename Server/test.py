@@ -69,7 +69,7 @@ if __name__ == '__main__':
 	p1.start()
 
 	# Web listener for web-morda
-	p2 = Process(target=listener.run, args=())
+	p2 = Process(target=listener.run, args=(True,))
 	p2.start()
 
 	# Start bot

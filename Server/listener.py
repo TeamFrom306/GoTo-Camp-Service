@@ -1,7 +1,7 @@
 import hashlib
 from datetime import datetime
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 
 from Server import server
 
@@ -11,6 +11,11 @@ tokens = {}
 debug = True
 
 
+def validate_token(token):
+	if (not tokens.get(token)) & (not debug):
+		return abort(403)
+
+
 @app.route('/login/<pas>')
 def authentication(pas):
 	if server.check_password(pas):
@@ -18,16 +23,15 @@ def authentication(pas):
 		hex_dig = hash_object.hexdigest()
 		tokens[hex_dig] = True
 		return jsonify({"result": {"token": hex_dig}})
-	return jsonify({})
+	return abort(404)
 
 
 @app.route('/<token>/users/', methods=['GET'])
 def users_get(token):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.get_users()
 	if not res:
-		return jsonify({})
+		return abort(404)
 	users = []
 	for r in res:
 		users.append({
@@ -42,11 +46,10 @@ def users_get(token):
 
 @app.route('/<token>/users/<id_user>/', methods=['DELETE'])
 def users_delete(token, id_user):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.remove_user(id_user)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
@@ -54,11 +57,10 @@ def users_delete(token, id_user):
 @app.route('/<token>/achievements/', defaults={'id_user': None}, methods=['GET'])
 @app.route('/<token>/achievements/<id_user>/', methods=['GET'])
 def achievements_get(token, id_user):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.get_achievements(id_user)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	achievements = []
 	for r in res:
 		achievements.append({
@@ -72,11 +74,10 @@ def achievements_get(token, id_user):
 
 @app.route('/<token>/achievements/', methods=['POST'])
 def achievements_post(token):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.add_achievement(request.json["name"], request.json["description"])
 	if not res:
-		return jsonify({})
+		return abort(404)
 	res = {'id': res}
 	obj = {"result": res}
 	return jsonify(obj)
@@ -84,23 +85,21 @@ def achievements_post(token):
 
 @app.route('/<token>/achievements/<id_achievement>/', methods=['DELETE'])
 def achievements_delete(token, id_achievement):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.remove_achievement(id_achievement)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
 
 @app.route('/<token>/achievements/<id_user>/', methods=['POST'])
 def achievement_to_user(token, id_user):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	id_achievement = request.json['achievementId']
 	res = server.set_achievement_to_user(id_achievement, id_user)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
@@ -108,11 +107,10 @@ def achievement_to_user(token, id_user):
 @app.route('/<token>/schedule/<id_user>/', defaults={'date': datetime.now().timestamp()}, methods=['GET'])
 @app.route('/<token>/schedule/<id_user>/<date>/', methods=['GET'])
 def schedule_get(token, id_user, date):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.get_schedule(id_user, date)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	schedule = []
 	for r in res:
 		schedule.append({
@@ -129,11 +127,10 @@ def schedule_get(token, id_user, date):
 @app.route('/<token>/groups/', defaults={'id_user': None}, methods=['GET'])
 @app.route('/<token>/groups/<id_user>/', methods=['GET'])
 def groups_get(token, id_user):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.get_groups(id_user)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	groups = []
 	for r in res:
 		groups.append({
@@ -146,58 +143,53 @@ def groups_get(token, id_user):
 
 @app.route('/<token>/groups/', methods=['POST'])
 def groups_post(token):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	name = request.json['name']
 	res = server.add_group(name)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
 
 @app.route('/<token>/groups/<id_group>/', methods=['DELETE'])
 def group_delete(token, id_group):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.remove_group(id_group)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
 
 @app.route('/<token>/groups/<id_group>/', methods=['POST'])
 def add_users_to_group_post(token, id_group):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	users = request.json['users']
 	res = server.add_users_to_group(id_group, users)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
 
 @app.route('/<token>/teams/<id_group>/', methods=['POST'])
 def teams_post(token, id_group):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	codeword = request.json['codeword']
 	res = server.add_team(id_group, codeword)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": {'id': res}}
 	return jsonify(obj)
 
 
 @app.route('/<token>/teams/<id_team>/', methods=['DELETE'])
 def teams_delete(token, id_team):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.remove_team(id_team)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
@@ -205,11 +197,10 @@ def teams_delete(token, id_team):
 @app.route('/<token>/teams/', defaults={'id_user': None}, methods=['GET'])
 @app.route('/<token>/teams/<id_user>/', methods=['GET'])
 def teams_get(token, id_user):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.get_teams(id_user)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	teams = []
 	for r in res:
 		teams.append({
@@ -224,11 +215,10 @@ def teams_get(token, id_user):
 @app.route('/<token>/questions/', defaults={'id_team': None}, methods=['GET'])
 @app.route('/<token>/questions/<id_team>/', methods=['GET'])
 def questions_get(token, id_team):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.get_questions(id_team)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	questions = []
 	for r in res:
 		questions.append({
@@ -243,37 +233,34 @@ def questions_get(token, id_team):
 
 @app.route('/<token>/questions/', methods=['POST'])
 def questions_post(token):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	num = request.json['num']
 	description = request.json['description']
 	answer = request.json['answer']
 	res = server.add_question(num, description, answer)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": {'id': res}}
 	return jsonify(obj)
 
 
 @app.route('/<token>/questions/<id_group>/', methods=['POST'])
 def questions_to_teams_post(token, id_group):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	questions = request.json['questions']
 	res = server.add_questions_to_team(id_group, questions)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
 
 @app.route('/<token>/questions/<id_question>/', methods=['DELETE'])
 def questions_delete(token, id_question):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.remove_question(id_question)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
@@ -281,11 +268,10 @@ def questions_delete(token, id_question):
 @app.route('/<token>/events/', defaults={'id_group': None}, methods=['GET'])
 @app.route('/<token>/events/<id_group>/', methods=['GET'])
 def events_get(token, id_group):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.get_events(id_group)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	events = []
 	for r in res:
 		events.append({
@@ -301,50 +287,46 @@ def events_get(token, id_group):
 
 @app.route('/<token>/events/', methods=['POST'])
 def events_post(token):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	name = request.json['name']
 	description = request.json['description']
 	start = request.json['start']
 	end = request.json['end']
 	res = server.add_event(name, float(start), float(end), description)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": {'id': res}}
 	return jsonify(obj)
 
 
 @app.route('/<token>/events/<id_group>', methods=['POST'])
 def events_to_group_post(token, id_group):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	events = request.json['events']
 	res = server.add_events_to_group(id_group, events)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
 
 @app.route('/<token>/events/<id_event>/', methods=['DELETE'])
 def events_delete(token, id_event):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	res = server.remove_event(id_event)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
 
 @app.route('/<token>/messages/<id_group>', methods=['POST'])
 def messages_to_group_post(token, id_group):
-	if (not tokens.get(token)) & (not debug):
-		return jsonify({})
+	validate_token(token)
 	text = request.json['text']
 	res = server.send_message_to_group(id_group, text)
 	if not res:
-		return jsonify({})
+		return abort(404)
 	obj = {"result": res}
 	return jsonify(obj)
 
