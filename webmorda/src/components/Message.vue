@@ -28,7 +28,7 @@
         },
         methods: {
             send() {
-                require('./../web').api.message.send(this.message, this.selected, );
+                require('./../web').api.message.send(this.message, this.selected);
             },
             success(result) {
                 this.$refs.snackbarContainer.createSnackbar({
