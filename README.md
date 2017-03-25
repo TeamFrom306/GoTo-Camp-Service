@@ -5,7 +5,7 @@
 ## Build Setup front-end vue.js part
 
 ``` bash
-cd ./WebMorda/gcs-WebMorda
+cd ./webmorda/
 
 # install dependencies
 npm install
