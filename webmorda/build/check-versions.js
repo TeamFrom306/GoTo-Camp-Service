@@ -21,7 +21,7 @@ var versionRequirements = [
 
 module.exports = function () {
 	var warnings = []
-	for (var i = 0; i < versionRequirements.length; i++) {
+	for (let i = 0; i < versionRequirements.length; i++) {
 		var mod = versionRequirements[i]
 		if (!semver.satisfies(mod.currentVersion, mod.versionRequirement)) {
 			warnings.push(mod.name + ': ' +
@@ -32,14 +32,12 @@ module.exports = function () {
 	}
 
 	if (warnings.length) {
-		console.log('')
-		console.log(chalk.yellow('To use this template, you must update following to modules:'))
-		console.log()
-		for (var i = 0; i < warnings.length; i++) {
+		console.log('\n' + chalk.yellow('To use this template, you must update following to modules:') + '\n')
+		for (let i = 0; i < warnings.length; i++) {
 			var warning = warnings[i]
 			console.log('  ' + warning)
 		}
-		console.log()
+		console.log('\n')
 		process.exit(1)
 	}
 }
