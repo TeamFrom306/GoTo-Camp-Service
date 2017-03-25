@@ -1,12 +1,70 @@
+import sched
 from datetime import datetime, timedelta
+from time import sleep
+
 from db_connection import Database
+
 import bot
+
 
 db = Database()
 last_team_id = {}
+event_scheduler = sched.scheduler(sched.time.time, sched.time.sleep)
+scheduler = sched.scheduler(sched.time.time, sched.time.sleep)
 
 
-# region Urgent Messages
+def start_scheduler():
+	while True:
+		events = get_events()
+		for event in events:
+			time = event[1] - 15 * 60
+			now = datetime.now().timestamp()
+			if (time >= now) & (time - now < 600):
+				id_list = db.get_users_by_event(event[0])
+				list_id = []
+				for id_tg in id_list:
+					list_id.append(id_tg[0])
+				if len(list_id) > 0:
+					event_scheduler.enterabs(time, 1, send_messages_by_ids,
+											 (list_id, event[4] + "\nDescription: " + event[3]))
+		if len(event_scheduler.queue) == 0:
+			sleep(300)
+		event_scheduler.run()
+
+
+def yet_another_scheduler(time):
+	hour = time.hour
+	minute = time.minute
+	next_time = datetime.combine(datetime.now().date(),
+								 datetime.min.time()).timestamp() + 3600 * hour + minute * 60
+	while True:
+		users = get_users()
+		for user in users:
+			schedule = get_schedule(user[0], datetime.now())
+			s = ""
+			for sch in schedule:
+				s += "{0}  {1}-{2}\nDescription:   {3}\n\n" \
+					.format(sch[1],
+							datetime.fromtimestamp(sch[3]).strftime("%H:%M:%S"),
+							datetime.fromtimestamp(sch[4]).strftime("%H:%M:%S"),
+							sch[2])
+			scheduler.enterabs(next_time, 1, send_messages_by_ids, ([user[0]], s))
+		scheduler.run()
+		next_time += 86400
+
+	# for event in events:
+	# 	time = event[1] - 15 * 60
+	# 	now = datetime.now().timestamp()
+	# 	if (time >= now) & (time - now < 600):
+	# 		id_list = db.get_users_by_event(event[0])
+	# 		list_id = []
+	# 		for id_tg in id_list:
+	# 			list_id.append(id_tg[0])
+	# 		if len(list_id) > 0:
+	# 			event_scheduler.enterabs(time, 1, send_messages_by_ids, (list_id, event[4] + "\nDescription: " + event[3]))
+
+
+# <editor-fold desc="Urgent messages">
 def send_messages_by_ids(id_list, text):
 	bot.send_message(id_list, text)
 
@@ -19,8 +77,7 @@ def send_message_to_group(id_group, text):
 	bot.send_message(id_list, text)
 
 
-# endregion
-
+# </editor-fold>
 
 # <editor-fold desc="Users">
 def add_user(id_tg, name, surname):
@@ -83,11 +140,11 @@ def add_team(id_group, codeword):
 
 
 def remove_team(id_group):
-	return db.remove_data(id_group, 'team')
+	return db.remove_team(id_group)
 
 
 def get_teams(id_group=None):
-	return db.get_data(id_group, 'team')
+	return db.get_teams(id_group)
 
 
 # </editor-fold>
@@ -144,14 +201,18 @@ def get_achievements(id_tg=None):
 
 
 def set_achievement_to_user(id_achievement, id_tg):
-	return db.add_to_cross_table(id_tg, [id_achievement], 'user', 'achievement', 'users_achievements')
+	res = db.add_to_cross_table(id_tg, [id_achievement], 'user', 'achievement', 'users_achievements')
+	if res:
+		bot.send_message([id_tg], "You reach new achievement!")
+	return res
 
 
 # </editor-fold>
 
-
 # <editor-fold desc="Schedule">
 def get_schedule(id_tg, date):
+	if type(date) != datetime:
+		date = datetime.fromtimestamp(float(date))
 	start, end = get_start_end_date(date)
 	return db.get_schedule(id_tg, start, end)
 
@@ -163,6 +224,7 @@ def get_start_end_date(date):
 
 
 # </editor-fold>
+
 def wipe_data():
 	db.wipe_data()
 
@@ -200,3 +262,7 @@ def get_answer(id_tg):
 
 def inc(id_tg):
 	db.inc(last_team_id[id_tg])
+
+
+def check_password(password):
+	return db.check_password(password)

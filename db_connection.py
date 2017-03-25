@@ -20,11 +20,15 @@ class Database:
 			return False
 
 	def get_data(self, id_field, table):
-		s = 'SELECT * FROM {}s'.format(table)
-		if id_field is not None:
-			s += ' WHERE id_{1} = {0}'.format(id_field, table)
-			return self.db.execute(s).fetchone()
-		return self.db.execute(s).fetchall()
+		try:
+			s = 'SELECT * FROM {}s'.format(table)
+			if id_field is not None:
+				s += ' WHERE id_{1} = {0}'.format(id_field, table)
+				return self.db.execute(s).fetchone()
+			return self.db.execute(s).fetchall()
+		except Exception as e:
+			print(e)
+			return False
 
 	def add_data_by_sql(self, string):
 		try:
@@ -128,7 +132,7 @@ class Database:
 
 	def get_events(self, id_group):
 		if id_group is None:
-			return self.get_data(None, 'group')
+			return self.get_data(None, 'event')
 		else:
 			try:
 				c = self.db.cursor()
@@ -144,7 +148,7 @@ class Database:
 	def get_achievements(self, id_tg):
 
 		if id_tg is None:
-			return self.get_data(None, 'achievements')
+			return self.get_data(None, 'achievement')
 		else:
 			try:
 				c = self.db.cursor()
@@ -289,5 +293,50 @@ class Database:
 			return False
 
 	def add_reference_info(self, name, description):
-		s = "INSERT INTO reference_informations (name, description) VALUES ('{0}', '{1}')".format(name, description)
-		return self.add_data_by_sql(s)
+		try:
+			s = "INSERT INTO reference_informations (name, description) VALUES ('{0}', '{1}')".format(name, description)
+			return self.add_data_by_sql(s)
+		except Exception as e:
+			print(e)
+			return False
+
+	def get_users_by_event(self, id_event):
+		try:
+			s = "SELECT DISTINCT users.id_user " \
+				"FROM users JOIN users_groups ON users.id_user = users_groups.id_user " \
+				"JOIN groups ON users_groups.id_group = groups.id_group " \
+				"JOIN events_groups ON groups.id_group = events_groups.id_group " \
+				"JOIN events ON events_groups.id_event = events.id_event " \
+				"WHERE events.id_event == {0}".format(id_event)
+			return self.db.execute(s).fetchall()
+		except Exception as e:
+			print(e)
+			return False
+
+	def check_password(self, password):
+		try:
+			s = "SELECT * FROM passwords WHERE password == '{0}'".format(password)
+			return self.db.execute(s).fetchall()
+		except Exception as e:
+			print(e)
+			return False
+
+	def get_teams(self, id_group):
+		try:
+			s = 'SELECT * FROM teams'
+			if id_group is not None:
+				s += ' WHERE id_group = {0}'.format(id_group)
+				return self.db.execute(s).fetchone()
+			return self.db.execute(s).fetchall()
+		except Exception as e:
+			print(e)
+			return False
+
+	def remove_team(self, id_group):
+		try:
+			self.db.execute('DELETE FROM teams WHERE id_group = {0}'.format(id_group))
+			self.db.commit()
+			return True
+		except Exception as e:
+			print(e)
+			return False

@@ -59,7 +59,10 @@ def handle_any(message):
 
 def send_message(id_list, text):
 	for chat_id in id_list:
-		bot.send_message(chat_id, text)
+		try:
+			bot.send_message(chat_id, text)
+		except Exception as e:
+			print(e)
 		sleep(0.05)
 
 
