@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, abort, render_template
 import server
 import config
 
-app = Flask(__name__, template_folder=config.index_path)
+app = Flask(__name__, template_folder=config.index_path, static_folder=config.static_path)
 
 tokens = {}
 debug = True
@@ -16,7 +16,7 @@ def fallback(dummy):
 
 
 @app.route('/')
-def index(dummy):
+def index():
 	return render_template("index.html"), 302
 
 

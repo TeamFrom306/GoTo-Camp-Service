@@ -5,7 +5,7 @@ database = 'tg-bot'
 
 index_path = '..\\WebMorda'
 static_path = '..\\WebMorda\\static'
-server_port = 80
+server_port = 8080
 
 anton_tg_id = 111270670
 
