@@ -39,4 +39,4 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 ---
 
-##
+## To see the result - view `http://localhost:8080/` in browser.
