@@ -36,9 +36,7 @@ def start_scheduler():
 		event_scheduler.run()
 
 
-def yet_another_scheduler(time):
-	hour = time.hour
-	minute = time.minute
+def yet_another_scheduler(hour, minute):
 	next_time = datetime.combine(datetime.now().date(),
 								 datetime.min.time()).timestamp() + 3600 * hour + minute * 60
 	while True:

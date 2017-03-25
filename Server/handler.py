@@ -168,8 +168,8 @@ class Handler:
 			return self.ask_question(msg)
 		else:
 			markup = telebot.types.ReplyKeyboardMarkup()
-			markup.add('Back')
 			markup.add('Question')
+			markup.add('Back')
 			self.bot.send_message(msg.chat.id, config.wrong_answer_msg, reply_markup=markup)
 			self.bot.register_next_step_handler(msg, self.check_answer)
 			return True

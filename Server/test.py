@@ -7,26 +7,10 @@ from Server import listener
 
 from Server import server
 
-
-# test_dict = {}
-#
-#
-# @bot.message_handler(content_types=['text'])
-# def handle_any(message):
-# 	if test_dict.get(message.chat.id) is None:
-# 		test_dict[message.chat.id] = True
-# 	else:
-# 		return
-# 	if db.get_class(message.chat.id):
-# 		root.handler(message)
-# 	else:
-# 		handle_start(message)
-
-def do_something():
-	print(123)
+test_dict = {}
 
 
-def questions_test():
+def fill_data():
 	tg_id = config.anton_tg_id
 	assert (server.get_users() == [])
 	assert (server.get_users(tg_id) is None)
@@ -34,11 +18,8 @@ def questions_test():
 	assert (server.add_user(tg_id, 'Anton', 'Prokopev'))
 	assert (server.get_users(tg_id) == (tg_id, 'Anton', 'Prokopev', None))
 	assert (server.get_users() == [(tg_id, 'Anton', 'Prokopev', None)])
-	# assert (server.set_room(tg_id, '1-306'))
-	# assert (server.get_users(tg_id) == (tg_id, 'Anton', 'Prokopev', '1-306'))
 
 	assert (server.add_user(10931724, 'Anton', 'Prokopev'))
-	# assert (server.get_users() == [(tg_id, 'Anton', 'Prokopev', '1-306'), (10931724, 'Anton', 'Prokopev', None)])
 
 	assert (server.remove_group(1))
 	id_group = server.add_group('Holiday party')
@@ -69,15 +50,27 @@ def questions_test():
 
 
 if __name__ == '__main__':
-	pass
+	# Wipe all data from DB
+	# Comment in realise
 	server.wipe_data()
+
 	bot.make_bot()
-	questions_test()
+
+	# Comment in realise
+	fill_data()
+
+	# Scheduler for recent notifications
 	p = Process(target=server.start_scheduler, args=())
-	d = datetime(hour=14, minute=15, year=1970, month=1, day=1)
-	p1 = Process(target=server.yet_another_scheduler, args=(d,))
-	p2 = Process(target=listener.run, args=())
 	p.start()
+
+	# Scheduler for sending a schedule every day
+	# param#1 = hour, param#2 = minute
+	p1 = Process(target=server.yet_another_scheduler, args=(14, 15,))
 	p1.start()
+
+	# Web listener for web-morda
+	p2 = Process(target=listener.run, args=())
 	p2.start()
+
+	# Start bot
 	bot.start_polling()

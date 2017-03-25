@@ -19,43 +19,28 @@ def handle_start(message):
 	server.add_user(message.chat.id, message.chat.first_name, message.chat.last_name)
 	if len(bot.pre_message_subscribers_next_step) > 0:
 		bot.pre_message_subscribers_next_step.clear()
-	# bot.send_message(message.chat.id, message.text)
-	# users = server.get_groups(message.chat.id)
-	# bot.send_message(message.chat.id, str(users))
 	r = Menu("Root", "", bot).get_root()
 	r.add_row("Enter room", handler.set_room, back_button=False)
 	r.add_row("Skip", handler.main_menu, back_button=False)
 	handler.start_menu(r)
 	bot.send_message(message.chat.id, config.welcome_msg, reply_markup=r.make_keyboard())
 	bot.register_next_step_handler(message, r.handler)
-	# bot.message_handlers.clear()
-	# r = Menu("Root", "", bot).get_root()
-	# r.add_row("11Б", handler.choose_class, back_button=False) \
-	# 	.append_column("11А", handler.choose_class, back_button=False)
-	# r.add_row("10Б", handler.choose_class, back_button=False) \
-	# 	.append_column("10А", handler.choose_class, back_button=False)
-	# handler.start_menu(r)
-	# msg = bot.send_message(message.chat.id, "Choose your class", reply_markup=r.make_keyboard())
-	# bot.register_next_step_handler(msg, r.handler)
 	return True
-
-
-test_dict = {}
 
 
 @bot.message_handler(content_types=['text'])
 def handle_any(message):
-	pass
+	if users_dict.get(message.chat.id) is None:
+		users_dict[message.chat.id] = True
+	else:
+		return
+	if server.get_users(message.chat.id):
+		menu.get_root().handler(message)
+	else:
+		handle_start(message)
 
 
-# if test_dict.get(message.chat.id) is None:
-# 	test_dict[message.chat.id] = True
-# else:
-# 	return
-# if db.get_class(message.chat.id):
-# 	root.handler(message)
-# else:
-# 	handle_start(message)
+users_dict = {}
 
 
 def send_message(id_list, text):
