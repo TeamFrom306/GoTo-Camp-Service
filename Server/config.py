@@ -3,6 +3,9 @@ spreadsheet_id = '1aW8yqhI8mfqWjqd5EupSbFCq5XELn_WzXniVQLM79nQ'
 
 database = 'Server/tg-bot'
 
+index_path = 'C:\\Users\\proko\\Documents\\goto-camp-service\\WebMorda'
+server_port = 80
+
 anton_tg_id = 111270670
 
 welcome_msg = 'Hello blablbla'

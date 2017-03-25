@@ -1,14 +1,18 @@
 import hashlib
 from datetime import datetime
-
-from flask import Flask, request, jsonify, abort
-
+from flask import Flask, request, jsonify, abort, render_template
 from Server import server
+from Server import config
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=config.index_path)
 
 tokens = {}
 debug = True
+
+
+@app.route('/<path:dummy>')
+def fallback(dummy):
+	return render_template("index.html"), 302
 
 
 def validate_token(token):
@@ -337,6 +341,6 @@ def run(d=True):
 
 	app.run(
 		host="127.0.0.1",
-		port=int("80"),
+		port=int(config.server_port),
 		debug=False
 	)

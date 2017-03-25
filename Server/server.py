@@ -1,9 +1,7 @@
 import sched
 from datetime import datetime, timedelta
 from time import sleep
-
 from Server import bot
-
 from Server.db_connection import Database
 
 db = Database()

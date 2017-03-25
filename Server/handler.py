@@ -1,8 +1,7 @@
 import datetime
-
-import config
+from Server import config
 import telebot
-from db_connection import Database
+from Server.db_connection import Database
 
 from Server import server
 
