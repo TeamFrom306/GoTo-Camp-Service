@@ -56,7 +56,7 @@
             },
             remove (e) {
                 var id = e;
-                api.achievements.remove(id, () => {this.removeHelper(id)});
+                api.achievements.delete(id, () => {this.removeHelper(id)});
             }
         },
         mounted() {
@@ -66,8 +66,7 @@
 </script>
 
 <style scoped>
-    [name],[desc],ui-button {
+    [name],[desc],.ui-button {
         width: 100%;
-        /* display: inline-block;*/
     }
 </style>

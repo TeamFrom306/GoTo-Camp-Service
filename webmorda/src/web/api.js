@@ -82,6 +82,11 @@ export default function(baseUrl) {
 			},
 		},
 
-
+		message: {
+			url: token + '/messages/',
+			send: function(message, ids, successCallback, errorCallback) {
+				ajax(baseUrl).post(this.url, {text:message}, successCallback, errorCallback);
+			}
+		}
 	}
 }
