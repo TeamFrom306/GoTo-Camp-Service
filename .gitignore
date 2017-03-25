@@ -1,5 +1,6 @@
 .DS_Store
-WebMorda/node_modules/
-dist/
+webmorda/node_modules/
+webmorda/dist/
 npm-debug.log
 yarn-error.log
+tg-bot.db
