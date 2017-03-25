@@ -14,8 +14,8 @@ handler = Handler(menu=menu, bot=bot)
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-	# if len(bot.message_handlers) > 1:
-	#     bot.message_handlers.pop()
+	if len(bot.message_handlers) > 1:
+	    bot.message_handlers.pop()
 	server.add_user(message.chat.id, message.chat.first_name, message.chat.last_name)
 	if len(bot.pre_message_subscribers_next_step) > 0:
 		bot.pre_message_subscribers_next_step.clear()
@@ -65,8 +65,3 @@ def make_bot():
 
 def start_polling():
 	bot.polling(none_stop=True)
-	# while True:
-	# 	try:
-	# 	except Exception as e:
-	# 		print(e)
-	# 		sleep(1)
