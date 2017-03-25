@@ -1,6 +1,24 @@
 # GoTo Camp Service
 
 > A project for GoTo Camp trials.
+---
+
+## Build Setup Bot & Server part
+``` bash
+# reqierement python 3.5+
+
+# install dependencies
+pip install PyTelegramBotAPI
+
+pip install Flask
+
+# configurate messages from config.py
+
+# run Server with bot
+python test.py
+```
+
+---
 
 ## Build Setup Bot & Server part
 ``` bash
@@ -39,4 +57,4 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 ---
 
-##
+## To see the result open `http://localhost:8080/` in browser
