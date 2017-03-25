@@ -1,5 +1,6 @@
 .DS_Store
-WebMorda/node_modules/
+webmorda/node_modules/
+gcs-webmorda/node_modules/
 dist/
 npm-debug.log
 yarn-error.log
