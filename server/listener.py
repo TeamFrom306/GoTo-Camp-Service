@@ -1,6 +1,6 @@
 import hashlib
 from datetime import datetime
-from flask import Flask, request, jsonify, abort, render_template
+from flask import Flask, request, jsonify, abort, render_template, json
 import server
 import config
 
@@ -85,7 +85,8 @@ def achievements_get(token, id_user):
 @app.route('/<token>/achievements/', methods=['POST'])
 def achievements_post(token):
 	validate_token(token)
-	res = server.add_achievement(request.json["name"], request.json["description"])
+	dataDict = json.loads(request.data)
+	res = server.add_achievement(dataDict["name"], dataDict["description"])
 	if not res:
 		return abort(404)
 	res = {'id': res}
@@ -106,7 +107,8 @@ def achievements_delete(token, id_achievement):
 @app.route('/<token>/achievements/<id_user>/', methods=['POST'])
 def achievement_to_user(token, id_user):
 	validate_token(token)
-	id_achievement = request.json['achievementId']
+	dataDict = json.loads(request.data)
+	id_achievement = dataDict['achievementId']
 	res = server.set_achievement_to_user(id_achievement, id_user)
 	if not res:
 		return abort(404)
@@ -154,7 +156,8 @@ def groups_get(token, id_user):
 @app.route('/<token>/groups/', methods=['POST'])
 def groups_post(token):
 	validate_token(token)
-	name = request.json['name']
+	dataDict = json.loads(request.data)
+	name = dataDict['name']
 	res = server.add_group(name)
 	if not res:
 		return abort(404)
@@ -175,7 +178,8 @@ def group_delete(token, id_group):
 @app.route('/<token>/groups/<id_group>/', methods=['POST'])
 def add_users_to_group_post(token, id_group):
 	validate_token(token)
-	users = request.json['users']
+	dataDict = json.loads(request.data)
+	users = dataDict['users']
 	res = server.add_users_to_group(id_group, users)
 	if not res:
 		return abort(404)
@@ -186,7 +190,8 @@ def add_users_to_group_post(token, id_group):
 @app.route('/<token>/teams/<id_group>/', methods=['POST'])
 def teams_post(token, id_group):
 	validate_token(token)
-	codeword = request.json['codeword']
+	dataDict = json.loads(request.data)
+	codeword = dataDict['codeword']
 	res = server.add_team(id_group, codeword)
 	if not res:
 		return abort(404)
@@ -244,9 +249,10 @@ def questions_get(token, id_team):
 @app.route('/<token>/questions/', methods=['POST'])
 def questions_post(token):
 	validate_token(token)
-	num = request.json['num']
-	description = request.json['description']
-	answer = request.json['answer']
+	dataDict = json.loads(request.data)
+	num = dataDict['num']
+	description = dataDict['description']
+	answer = dataDict['answer']
 	res = server.add_question(num, description, answer)
 	if not res:
 		return abort(404)
@@ -257,7 +263,8 @@ def questions_post(token):
 @app.route('/<token>/questions/<id_group>/', methods=['POST'])
 def questions_to_teams_post(token, id_group):
 	validate_token(token)
-	questions = request.json['questions']
+	dataDict = json.loads(request.data)
+	questions = dataDict['questions']
 	res = server.add_questions_to_team(id_group, questions)
 	if not res:
 		return abort(404)
@@ -298,10 +305,11 @@ def events_get(token, id_group):
 @app.route('/<token>/events/', methods=['POST'])
 def events_post(token):
 	validate_token(token)
-	name = request.json['name']
-	description = request.json['description']
-	start = request.json['start']
-	end = request.json['end']
+	dataDict = json.loads(request.data)
+	name = dataDict['name']
+	description = dataDict['description']
+	start = dataDict['start']
+	end = dataDict['end']
 	res = server.add_event(name, float(start), float(end), description)
 	if not res:
 		return abort(404)
@@ -312,7 +320,8 @@ def events_post(token):
 @app.route('/<token>/events/<id_group>', methods=['POST'])
 def events_to_group_post(token, id_group):
 	validate_token(token)
-	events = request.json['events']
+	dataDict = json.loads(request.data)
+	events = dataDict['events']
 	res = server.add_events_to_group(id_group, events)
 	if not res:
 		return abort(404)
@@ -333,7 +342,8 @@ def events_delete(token, id_event):
 @app.route('/<token>/messages/<id_group>', methods=['POST'])
 def messages_to_group_post(token, id_group):
 	validate_token(token)
-	text = request.json['text']
+	dataDict = json.loads(request.data)
+	text = dataDict['text']
 	res = server.send_message_to_group(id_group, text)
 	if not res:
 		return abort(404)
