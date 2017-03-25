@@ -1,11 +1,11 @@
 from datetime import datetime
 from multiprocessing import Process
 
-from Server import bot
-from Server import config
-from Server import listener
+import bot
+import config
+import listener
 
-from Server import server
+import server
 
 test_dict = {}
 

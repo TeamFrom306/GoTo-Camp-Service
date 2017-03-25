@@ -1,10 +1,10 @@
 from time import sleep
-from Server import config
+import config
 import telebot
-from Server.handler import Handler
-from Server.menu import Menu
+from handler import Handler
+from menu import Menu
 
-from Server import server
+import server
 
 bot = telebot.TeleBot(config.token)
 menu = Menu("Root", "ROOT", bot)
@@ -64,9 +64,9 @@ def make_bot():
 
 
 def start_polling():
-	while True:
-		try:
-			bot.polling(none_stop=True)
-		except Exception as e:
-			print(e)
-			sleep(1)
+	bot.polling(none_stop=True)
+	# while True:
+	# 	try:
+	# 	except Exception as e:
+	# 		print(e)
+	# 		sleep(1)

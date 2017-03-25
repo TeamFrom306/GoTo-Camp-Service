@@ -1,8 +1,8 @@
 import sched
 from datetime import datetime, timedelta
 from time import sleep
-from Server import bot
-from Server.db_connection import Database
+import bot
+from db_connection import Database
 
 db = Database()
 last_team_id = {}
