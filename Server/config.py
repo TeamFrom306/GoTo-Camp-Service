@@ -1,9 +1,10 @@
 token = '186494355:AAGJKF0-L_anP5XzdXWYV6NFyZJUDwLgnzM'
 spreadsheet_id = '1aW8yqhI8mfqWjqd5EupSbFCq5XELn_WzXniVQLM79nQ'
 
-database = 'Server/tg-bot'
+database = 'tg-bot'
 
-index_path = 'C:\\Users\\proko\\Documents\\goto-camp-service\\WebMorda'
+index_path = '..\\WebMorda'
+static_path = '..\\WebMorda\\static'
 server_port = 80
 
 anton_tg_id = 111270670

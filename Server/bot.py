@@ -1,10 +1,10 @@
 from time import sleep
-from Server import config
+import config
 import telebot
-from Server.handler import Handler
-from Server.menu import Menu
+from handler import Handler
+from menu import Menu
 
-from Server import server
+import server
 
 bot = telebot.TeleBot(config.token)
 menu = Menu("Root", "ROOT", bot)
@@ -14,8 +14,8 @@ handler = Handler(menu=menu, bot=bot)
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-	# if len(bot.message_handlers) > 1:
-	#     bot.message_handlers.pop()
+	if len(bot.message_handlers) > 1:
+	    bot.message_handlers.pop()
 	server.add_user(message.chat.id, message.chat.first_name, message.chat.last_name)
 	if len(bot.pre_message_subscribers_next_step) > 0:
 		bot.pre_message_subscribers_next_step.clear()
@@ -64,9 +64,13 @@ def make_bot():
 
 
 def start_polling():
-	while True:
-		try:
-			bot.polling(none_stop=True)
-		except Exception as e:
-			print(e)
-			sleep(1)
+	bot.polling(none_stop=True)
+	# while True:
+	# 	try:
+	# 	except KeyboardInterrupt:
+	# 		print('stopping')
+	# 		return
+	# 	except Exception as e:
+	# 		print(e)
+	# 		print('ehereeererer')
+	# 		sleep(1)

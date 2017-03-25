@@ -1,8 +1,8 @@
 import hashlib
 from datetime import datetime
 from flask import Flask, request, jsonify, abort, render_template
-from Server import server
-from Server import config
+import server
+import config
 
 app = Flask(__name__, template_folder=config.index_path)
 
@@ -12,6 +12,11 @@ debug = True
 
 @app.route('/<path:dummy>')
 def fallback(dummy):
+	return render_template("index.html"), 302
+
+
+@app.route('/')
+def index(dummy):
 	return render_template("index.html"), 302
 
 

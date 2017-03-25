@@ -1,9 +1,9 @@
 import datetime
-from Server import config
+import config
 import telebot
-from Server.db_connection import Database
+from db_connection import Database
 
-from Server import server
+import server
 
 
 class Handler:
