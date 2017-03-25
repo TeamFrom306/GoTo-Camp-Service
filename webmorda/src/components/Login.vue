@@ -43,8 +43,9 @@
 				else
 					this.errorCallback(406, "You must provide a password!");
 			},
-			setToken(token) {
-				this.$root.$options.user.token = token;
+			setToken(response) {
+				this.$root.$options.user.token = response.token;
+				this.$router.push("/");
 			},
 			errorCallback(code, error) {
 				this.inputInvalid = true;

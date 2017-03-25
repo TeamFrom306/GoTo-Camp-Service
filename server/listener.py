@@ -4,7 +4,9 @@ from flask import Flask, request, jsonify, abort, render_template
 import server
 import config
 
-app = Flask(__name__, template_folder=config.index_path, static_folder=config.static_path)
+import os
+ASSETS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../webmorda/dist')
+app = Flask(__name__, template_folder=ASSETS_DIR, static_folder=ASSETS_DIR + "/static")
 
 tokens = {}
 debug = True

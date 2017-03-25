@@ -8,6 +8,7 @@ export default function (baseUrl) {
 			if (xhr.response) {
 				if (xhr.status >= 200 && xhr.status < 400 && xhr.response.result) {
 					console.log(xhr.status);
+					console.log(xhr.response.result);
 					var result = xhr.response.result;
 					if (successCallback)
 						successCallback(result);
