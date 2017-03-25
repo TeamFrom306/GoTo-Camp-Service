@@ -8,6 +8,7 @@ from Server.db_connection import Database
 
 db = Database()
 last_team_id = {}
+last_user_events = {}
 event_scheduler = sched.scheduler(sched.time.time, sched.time.sleep)
 scheduler = sched.scheduler(sched.time.time, sched.time.sleep)
 
@@ -24,8 +25,12 @@ def start_scheduler():
 				for id_tg in id_list:
 					list_id.append(id_tg[0])
 				if len(list_id) > 0:
-					event_scheduler.enterabs(time, 1, send_messages_by_ids,
-											 (list_id, event[4] + "\nDescription: " + event[3]))
+					text = "Notification:\n{0}  {1}-{2}\nDescription:   {3}\n\n" \
+						.format(event[4],
+								datetime.fromtimestamp(float(event[1])).strftime("%H:%M:%S"),
+								datetime.fromtimestamp(float(event[2])).strftime("%H:%M:%S"),
+								event[3])
+					event_scheduler.enterabs(time, 1, send_messages_by_ids, (list_id, text))
 		if len(event_scheduler.queue) == 0:
 			sleep(300)
 		event_scheduler.run()
@@ -40,7 +45,7 @@ def yet_another_scheduler(time):
 		users = get_users()
 		for user in users:
 			schedule = get_schedule(user[0], datetime.now())
-			s = ""
+			s = "Your schedule:\n\n"
 			for sch in schedule:
 				s += "{0}  {1}-{2}\nDescription:   {3}\n\n" \
 					.format(sch[1],
@@ -50,17 +55,6 @@ def yet_another_scheduler(time):
 			scheduler.enterabs(next_time, 1, send_messages_by_ids, ([user[0]], s))
 		scheduler.run()
 		next_time += 86400
-
-	# for event in events:
-	# 	time = event[1] - 15 * 60
-	# 	now = datetime.now().timestamp()
-	# 	if (time >= now) & (time - now < 600):
-	# 		id_list = db.get_users_by_event(event[0])
-	# 		list_id = []
-	# 		for id_tg in id_list:
-	# 			list_id.append(id_tg[0])
-	# 		if len(list_id) > 0:
-	# 			event_scheduler.enterabs(time, 1, send_messages_by_ids, (list_id, event[4] + "\nDescription: " + event[3]))
 
 
 # <editor-fold desc="Urgent messages">
@@ -213,7 +207,9 @@ def get_schedule(id_tg, date):
 	if type(date) != datetime:
 		date = datetime.fromtimestamp(float(date))
 	start, end = get_start_end_date(date)
-	return db.get_schedule(id_tg, start, end)
+	res = db.get_schedule(id_tg, start, end)
+	last_user_events[id_tg] = res
+	return res
 
 
 def get_start_end_date(date):
@@ -233,11 +229,23 @@ def get_achievements_by_name(text):
 
 
 def get_events_by_tg_id(tg_id, date):
-	return db.get_events_by_tg_id(tg_id, date)
+	res = db.get_events_by_tg_id(tg_id, date)
+	last_user_events[tg_id] = res
+	return res
 
 
-def get_event_by_name(text):
-	return db.get_event_by_name(text)
+# def get_event_by_name(text):
+# 	return db.get_event_by_name(text)
+
+
+def get_event_by_name(text, tg_id):
+	events = last_user_events.get(tg_id)
+	res = False
+	for event in events:
+		if event[1] == text:
+			res = event[2]
+			break
+	return res
 
 
 def get_info_by_name(text):

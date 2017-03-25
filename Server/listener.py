@@ -337,6 +337,18 @@ def events_delete(token, id_event):
 	return jsonify(obj)
 
 
+@app.route('/<token>/messages/<id_group>', methods=['POST'])
+def messages_to_group_post(token, id_group):
+	if (not tokens.get(token)) & (not debug):
+		return jsonify({})
+	text = request.json['text']
+	res = server.send_message_to_group(id_group, text)
+	if not res:
+		return jsonify({})
+	obj = {"result": res}
+	return jsonify(obj)
+
+
 def run(d=True):
 	global debug
 	debug = d

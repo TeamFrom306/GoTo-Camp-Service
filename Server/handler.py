@@ -42,9 +42,9 @@ class Handler:
 			self.bot.send_message(msg.chat.id, config.main_menu_msg, reply_markup=self.menu.get_root().make_keyboard())
 			self.bot.register_next_step_handler(msg, self.menu.get_root().handler)
 		else:
-			description = server.get_event_by_name(msg.text[:-19])
+			description = server.get_event_by_name(msg.text[:-19], msg.chat.id)
 			if (description is not None) & (description != ""):
-				self.bot.send_message(msg.chat.id, description[3])
+				self.bot.send_message(msg.chat.id, description)
 			self.bot.register_next_step_handler(msg, self.get_description_event)
 		return True
 
@@ -163,7 +163,7 @@ class Handler:
 		if msg.text == 'Question':
 			return self.ask_question(msg)
 		answer = server.get_answer(msg.chat.id)
-		if answer[0] == msg.text:
+		if answer[0].lower() == msg.text.lower():
 			server.inc(msg.chat.id)
 			return self.ask_question(msg)
 		else:
@@ -173,7 +173,6 @@ class Handler:
 			self.bot.send_message(msg.chat.id, config.wrong_answer_msg, reply_markup=markup)
 			self.bot.register_next_step_handler(msg, self.check_answer)
 			return True
-
 
 	def start_menu(self, start_root):
 		self.start_root = start_root

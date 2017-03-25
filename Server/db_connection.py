@@ -186,7 +186,7 @@ class Database:
 		else:
 			try:
 				c = self.db.cursor()
-				s = "SELECT groups.id_group, groups.name " \
+				s = "SELECT users.id_user " \
 					"FROM users JOIN users_groups ON users.id_user = users_groups.id_user " \
 					"JOIN groups ON users_groups.id_group = groups.id_group " \
 					"WHERE groups.id_group == {0}".format(id_group)
