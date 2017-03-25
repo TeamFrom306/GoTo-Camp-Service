@@ -37,7 +37,7 @@
 					this.error(406, "You must provide a password!");
 			},
 			setToken(token) {
-				this.$root.$options.user;
+				this.$root.$options.user.token = token;
 			},
 			error(code, error) {
 				//TODO

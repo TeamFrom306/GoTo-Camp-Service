@@ -1,9 +1,11 @@
+import config from './../config';
+
 var user = {
 	get token() {
-		return this.storage.get('token');
+		return this.storage.get(config.tokenstring);
 	},
 	set token(value) {
-		return this.storage.set('token', value);
+		return this.storage.set(config.tokenstring, value);
 	},
 	get isLoggedIn() {
 		return !!this.token;
