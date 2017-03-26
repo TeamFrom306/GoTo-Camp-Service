@@ -1,5 +1,4 @@
-token = '186494355:AAGJKF0-L_anP5XzdXWYV6NFyZJUDwLgnzM'
-spreadsheet_id = '1aW8yqhI8mfqWjqd5EupSbFCq5XELn_WzXniVQLM79nQ'
+token = '375537263:AAHdkNOOyoK7MzBXtMpUVw-m4y8F2YfyzOU'
 
 database = 'tg-bot'
 
@@ -9,10 +8,10 @@ server_port = 8080
 
 anton_tg_id = 111270670
 
-welcome_msg = 'Hello blablbla'
+welcome_msg = 'Hello, my friend! Here you can check you daily schedule and achievements! Also there are some quests waiting for you...'
 back_msg = 'Back'
 wrong_msg = 'Try again'
-congratulation_msg = 'Thx'
+congratulation_msg = 'Cool! You have succeeded!'
 successful_msg = 'Successful'
 main_menu_msg = 'Choose from the menu'
 start_quest_msg = 'Enter your codeword'

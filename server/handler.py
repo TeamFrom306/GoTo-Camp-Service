@@ -99,7 +99,7 @@ class Handler:
 		return True
 
 	def set_room(self, msg):
-		markup = telebot.types.ReplyKeyboardHide(selective=False)
+		markup = telebot.types.ReplyKeyboardRemove(selective=False)
 		self.bot.send_message(msg.chat.id, "Send your room", reply_markup=markup)
 		self.bot.register_next_step_handler(msg, self.set_room_callback)
 		return True

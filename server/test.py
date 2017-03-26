@@ -24,25 +24,27 @@ def fill_data():
 	assert (server.remove_group(1))
 	id_group = server.add_group('Holiday party')
 	assert id_group
-	assert server.add_team(id_group, '1234')
+	assert server.add_team(id_group, 'The coolest team ever!')
 	assert server.add_users_to_group(id_group, [tg_id, 10931724])
 
 	assert (server.remove_event(1))
-	id_events = [server.add_event('Holiday', datetime.now().timestamp(), datetime.now().timestamp(), '123'),
-				 server.add_event('Holiday2', datetime.now().timestamp(), datetime.now().timestamp() + 3600, '113'),
-				 server.add_event('H3', datetime.now().timestamp() + 960, datetime.now().timestamp() + 84600, '115')]
-	assert (id_events != [])
+	id_events = [server.add_event('Holiday', 1490529600.0 - 3600 - 3600 - 3600, 1490540400.0 - 3600 - 3600 - 3600, 'Everyone likes holidays!')]
 	assert server.add_events_to_group(id_group, id_events)
+	id_events = [server.add_event('Xmas', 1490565600.0 - 3600 - 3600 - 3600, 1490565600.0 - 3600 - 3600, 'X? Mas!')]
+	assert server.add_events_to_group(id_group, id_events)
+	id_events = [server.add_event('H3', 1490504400.0 - 960 - 3600 - 3600 - 3600, 1490504400.0 + 84600 - 3600 - 3600 - 3600, 'It is Hummer H3, of course, waiting for ya!')]
+	assert server.add_events_to_group(id_group, id_events)
+	assert (id_events != [])
 
 	assert (server.remove_question(1))
-	id_questions = [server.add_question(0, 'question1', '123'), server.add_question(1, 'question2', '234')]
+	id_questions = [server.add_question(0, 'What is the bird?', 'The word'), server.add_question(1, 'Who is Blin?', 'Clinton')]
 	assert id_questions != []
 	server.add_questions_to_team(id_group, id_questions)
 
-	server.add_reference_information('Number1', '8999999999')
-	server.add_reference_information('Number2', '9888888888')
+	server.add_reference_information('Help service', '7ry-70-9ue55')
+	server.add_reference_information('Buka-soft', '9888888888')
 
-	id_achievement = server.add_achievement('Top 5', 'the best man')
+	id_achievement = server.add_achievement('Pick-up master', 'Help a girl with programming')
 	assert id_achievement
 	assert (server.set_achievement_to_user(id_achievement, tg_id))
 
@@ -52,25 +54,25 @@ def fill_data():
 if __name__ == '__main__':
 	# Wipe all data from DB
 	# Comment in release
-	# server.wipe_data()
+	server.wipe_data()
 
 	bot.make_bot()
 
 	# Comment in release
-	# fill_data()
+	fill_data()
 
 	# Scheduler for recent notifications
-	# p = Process(target=server.start_scheduler, args=())
-	# p.start()
+	p = Process(target=server.start_scheduler, args=())
+	p.start()
 
 	# Scheduler for sending a schedule every day
 	# param#1 = hour, param#2 = minute
-	# p1 = Process(target=server.yet_another_scheduler, args=(14, 15,))
-	# p1.start()
+	p1 = Process(target=server.yet_another_scheduler, args=(14, 15,))
+	p1.start()
 
 	# Web listener for web-morda
 	p2 = Process(target=listener.run, args=(True,))
 	p2.start()
 
 	# Start bot
-	# bot.start_polling()
+	bot.start_polling()
