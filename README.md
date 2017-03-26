@@ -2,17 +2,17 @@
 
 > A project for GoTo Camp trials.
 
-[![forthebadge](http://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](http://forthebadge.com)
-[![forthebadge](http://forthebadge.com/images/badges/contains-cat-gifs.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)]()
+[![forthebadge](http://forthebadge.com/images/badges/contains-cat-gifs.svg)](https://github.com/TeamFrom306/GoTo-Camp-Service/blob/master/webmorda/index.html)
 
-[![forthebadge](http://forthebadge.com/images/badges/made-with-python.svg)](http://forthebadge.com)
-[![forthebadge](http://forthebadge.com/images/badges/made-with-vue.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/images/badges/made-with-python.svg)](https://github.com/TeamFrom306/GoTo-Camp-Service/blob/master/server/test.py)
+[![forthebadge](http://forthebadge.com/images/badges/made-with-vue.svg)](https://github.com/TeamFrom306/GoTo-Camp-Service/blob/master/webmorda/index.html)
 
-[![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/images/badges/uses-js.svg)](https://github.com/TeamFrom306/GoTo-Camp-Service/blob/master/webmorda/index.html)
 [![forthebadge](http://forthebadge.com/images/badges/uses-badges.svg)](http://forthebadge.com)
 
-[![forthebadge](http://forthebadge.com/images/badges/validated-html5.svg)](http://forthebadge.com)
-[![forthebadge](http://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/images/badges/validated-html5.svg)](https://github.com/TeamFrom306/GoTo-Camp-Service/blob/master/webmorda/index.html)
+[![forthebadge](http://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)]()
 ---
 
 ## Build Setup Bot & Server part
