@@ -44,6 +44,28 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 ---
 
+## Bot functionality
+
+- Registration with/without room
+- Schedule for today
+- Events at this moment
+- Help information
+- Achievemnts
+- Description for each event and achievement
+- Quiz
+- Authetication for quiz by codeword
+- Auto-sending schedule every day at certain time
+- Reminder for upcoming events
+
+
+## Web interface functionality
+
+- Send urgent messages
+- View/Edit help and support contacts
+- [Edit, Add, Remove] X [achievements, teams, groups, events, questions]
+- See full API [Documentation](https://github.com/TeamFrom306/GoTo-Camp-Service/wiki/Web-API-Documetnation)
+
+---
 ## Bot screenshots
 
 ![Start](https://image.ibb.co/kBkFLa/2017_03_26_1.png)
